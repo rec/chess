@@ -180,6 +180,21 @@ KING = [
   [0, 0, 0, 0, 0, 0, 0,  0,  0, 0, 0, 0, 0, 0, 0],
 ]
 
+MOVES = {
+  'P': WHITE_PAWN_MOVE,
+  'p': BLACK_PAWN_MOVE,
+  'N': KNIGHT,
+  'K': KING,
+  'Q': QUEEN,
+  'R': ROOK,
+  'B': BISHOP,
+  'n': KNIGHT,
+  'k': KING,
+  'q': QUEEN,
+  'r': ROOK,
+  'b': BISHOP,
+  }
+
 BOARD_OFFSET = 7
 
 def allowed_move(begin, end, piece):
@@ -210,5 +225,3 @@ def moves_on_board(moves):
 
 def board_piece_moves(begin, piece):
   moves_on_board(piece_move(begin, piece))
-
-
