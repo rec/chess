@@ -17,10 +17,11 @@ STARTING_BOARD_DESC = [
 
 BLACK = False
 WHITE = True
+EMPTY = ' '
 
 STARTING_BOARD = [[p for p in row] for row in STARTING_BOARD_DESC]
 
-class Chess(object):
+class Game(object):
   def __init__(self):
     self.board = copy.deepcopy(STARTING_BOARD)
     self.last_pawn_move_or_capture = -1
@@ -39,7 +40,7 @@ class Chess(object):
     ex, ey = end
 
     begin_piece = self.board[by][bx]
-    assert begin_piece is not ' '
+    assert begin_piece is not EMPTY
 
     side_to_move = BLACK if self.move_number() % 2 else WHITE
     if side_to_move is BLACK:
@@ -47,10 +48,10 @@ class Chess(object):
     else:
       assert begin_piece.isupper()
 
-    self.board[by][bx] = ' '
+    self.board[by][bx] = EMPTY
     end_piece = self.board[ey][ex]
     self.board[ey][ex] = begin_piece
-    if end_piece != ' ':
+    if end_piece != EMPTY:
       self.captured += end_piece
       self.last_pawn_move_or_capture = self.move_number()
 
@@ -60,6 +61,15 @@ class Chess(object):
     if begin_piece == 'k':
       self.castle_possible[BLACK] = False
 
-    if begin_piece == 'k':
+    if begin_piece == 'K':
       self.castle_possible[WHITE] = False
 
+  def print_board(self):
+    for row in self.board:
+      print(''.join(row))
+
+def algebraic_to_coords(alg):
+  col, row = alg.lower()
+  x = ord(col) - ord('a')
+  y = 7 - (ord(row) - ord('1'))
+  return x, y
