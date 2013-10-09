@@ -17,6 +17,9 @@ BLACK = False
 WHITE = True
 EMPTY = ' '
 
+def is_black(piece):
+  return piece.isupper()
+
 STARTING_BOARD = [[p for p in row] for row in STARTING_BOARD_DESC]
 
 class Game(object):
@@ -36,32 +39,49 @@ class Game(object):
     self.board = copy.deepcopy(self.board)
     bx, by = begin
     ex, ey = end
+    dx = ex - bx
+    dy = ey - by
 
-    print(bx, by, self.board[by], self.board)
     begin_piece = self.board[by][bx]
     assert begin_piece != EMPTY
 
     side_to_move = WHITE if self.move_number() % 2 else BLACK
     if side_to_move is BLACK:
-      assert begin_piece.islower()
+      assert is_black(begin_piece)
     else:
-      assert begin_piece.isupper()
+      assert not is_black(begin_piece)
 
     self.board[by][bx] = EMPTY
     end_piece = self.board[ey][ex]
     self.board[ey][ex] = begin_piece
-    if end_piece != EMPTY:
-      self.captured += end_piece
-      self.last_pawn_move_or_capture = self.move_number()
 
     if begin_piece in 'pP':
       self.last_pawn_move_or_capture = self.move_number()
+      if end_piece == EMPTY and abs(dx):
+        end_piece = self.board[ey][bx]
+        assert end_piece in 'pP'
+        self.board[ey][bx] = EMPTY
 
-    if begin_piece == 'k':
-      self.castle_possible[BLACK] = False
+    if end_piece != EMPTY:
+      self.captured += piece
+      self.last_pawn_move_or_capture = self.move_number()
 
-    if begin_piece == 'K':
-      self.castle_possible[WHITE] = False
+    if begin_piece in 'kK':
+      if abs(dx) > 1:
+        assert self.castle_possible[side_to_move]
+        if dx > 0:
+          rx = 7
+          drx = -2
+        else:
+          rx = 0
+          drx = 2
+        rook = self.board[by][rx]
+        assert rook in 'rR'
+        self.board[by][rx] = EMPTY
+        assert self.board[by][rx + drx] == EMPTY
+        self.board[by][rx + drx] = rook
+
+      self.castle_possible[side_to_move] = False
 
   def has_piece_between(self, begin, end):
     bx, by = begin
@@ -83,7 +103,6 @@ class Game(object):
       x = bx + ddx * d
       y = by + ddy * d
       if self.board[y][x] != EMPTY:
-        print('Found a piece ', self.board[y][x], 'at', x, y)
         return True
     return False
 
