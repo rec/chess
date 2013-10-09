@@ -2,11 +2,13 @@
 
 from __future__ import absolute_import, division, print_function, unicode_literals
 
+import sys
+
 import Game
 import Pieces
 
 def chess():
-  game = Game.Game()
+  game = Game.Game(len(sys.argv) > 1 and sys.argv[1])
   while True:
     game.print_board()
     move = raw_input('Enter a move looking like a1-a3: ').strip().lower()
