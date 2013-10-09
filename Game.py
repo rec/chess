@@ -2,29 +2,19 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 
 import copy
 
-STARTING_BOARD_DESC = [
-  'rnbqkbnr',
-  'pppppppp',
-  '        ',
-  '        ',
-  '        ',
-  '        ',
-  'PPPPPPPP',
-  'RNBQKBNR'
-  ]
+import Board
+import Pieces
 
 BLACK = False
 WHITE = True
 EMPTY = ' '
 
 def is_black(piece):
-  return piece.isupper()
-
-STARTING_BOARD = [[p for p in row] for row in STARTING_BOARD_DESC]
+  return piece.islower()
 
 class Game(object):
-  def __init__(self):
-    self.board = copy.deepcopy(STARTING_BOARD)
+  def __init__(self, board=None):
+    self.board = board or copy.deepcopy(Board.INITIAL)
     self.last_pawn_move_or_capture = -1
     self.castle_possible = [True, True]
     self.board_history = []
@@ -47,9 +37,9 @@ class Game(object):
 
     side_to_move = WHITE if self.move_number() % 2 else BLACK
     if side_to_move is BLACK:
-      assert is_black(begin_piece)
+      assert is_black(begin_piece), begin_piece
     else:
-      assert not is_black(begin_piece)
+      assert not is_black(begin_piece), begin_piece
 
     self.board[by][bx] = EMPTY
     end_piece = self.board[ey][ex]
