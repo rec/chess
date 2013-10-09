@@ -64,6 +64,29 @@ class Game(object):
     if begin_piece == 'K':
       self.castle_possible[WHITE] = False
 
+  def has_piece_between(self, begin, end):
+    bx, by = begin
+    ex, ey = end
+    dx = ex - bx
+    dy = ey - by
+
+    if abs(dx) == 1 and abs(dy) == 2:
+      return False
+    if abs(dx) == 2 and abs(dy) == 1:
+      return False
+
+    assert abs(dx) == abs(dy) or not dy or not dy
+    delta = max(abs(dx), abs(dy))
+    ddx = dx / delta
+    ddy = dy / delta
+
+    for d in range(1, delta):
+      x = bx + ddx * d
+      y = by + ddy * d
+      if self.board[by][bx] != EMPTY:
+        return False
+    return True
+
   def print_board(self):
     for row in self.board:
       print(''.join(row))
