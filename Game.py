@@ -91,6 +91,7 @@ class Game(object):
     for row in self.board:
       print(''.join(row))
 
+
 def algebraic_to_coords(alg):
   col, row = alg.lower()
   x = ord(col) - ord('a')
