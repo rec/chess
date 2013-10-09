@@ -11,7 +11,7 @@ def chess():
   game = Game.Game(len(sys.argv) > 1 and sys.argv[1])
   while True:
     game.board.print_board()
-    move = raw_input('Enter a move looking like a1-a3: ').strip().lower()
+    move = raw_input('Enter a move looking like e2-e4: ').strip().lower()
     if not move:
       continue
     if 'quit'.startswith(move):

@@ -15,6 +15,7 @@ def to_row(row):
     result += ' '
   return result
 
+
 class Board(object):
   def __init__(self, desc=None):
     desc = desc or INITIAL_DESC

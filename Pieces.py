@@ -181,18 +181,33 @@ KING = [
 ]
 
 MOVES = {
-  'P': WHITE_PAWN_MOVE,
-  'p': BLACK_PAWN_MOVE,
-  'N': KNIGHT,
+  'B': BISHOP,
   'K': KING,
+  'N': KNIGHT,
+  'P': WHITE_PAWN_MOVE,
   'Q': QUEEN,
   'R': ROOK,
-  'B': BISHOP,
-  'n': KNIGHT,
+  'b': BISHOP,
   'k': KING,
+  'n': KNIGHT,
+  'p': BLACK_PAWN_MOVE,
   'q': QUEEN,
   'r': ROOK,
+  }
+
+CAPTURES = {
+  'B': BISHOP,
+  'K': KING,
+  'N': KNIGHT,
+  'P': WHITE_PAWN_CAPTURE,
+  'Q': QUEEN,
+  'R': ROOK,
   'b': BISHOP,
+  'k': KING,
+  'n': KNIGHT,
+  'p': BLACK_PAWN_CAPTURE,
+  'q': QUEEN,
+  'r': ROOK,
   }
 
 BOARD_OFFSET = 7
@@ -223,5 +238,3 @@ def moves_on_board(moves):
       print('X' if entry else '.', end='')
     print()
 
-def board_piece_moves(begin, piece):
-  moves_on_board(piece_move(begin, piece))

@@ -18,6 +18,7 @@ class Game(object):
     self.board_history = []
     self.last_pawn_move_two = None  # en passant
     self.captured = ''
+    self.side_to_move = WHITE
 
   def move_number(self):
     return len(self.board_history)
@@ -33,8 +34,7 @@ class Game(object):
     begin_piece = self.board.get(bx, by)
     assert begin_piece != EMPTY
 
-    side_to_move = WHITE if self.move_number() % 2 else BLACK
-    if side_to_move is BLACK:
+    if self.side_to_move == BLACK:
       assert is_black(begin_piece), begin_piece
     else:
       assert not is_black(begin_piece), begin_piece
@@ -64,7 +64,7 @@ class Game(object):
 
     if begin_piece in 'kK':
       if abs(dx) > 1:
-        assert self.castle_possible[side_to_move]
+        assert self.castle_possible[self.side_to_move]
         if dx > 0:
           rx = 7
           drx = -2
@@ -77,7 +77,11 @@ class Game(object):
         assert self.board.get(rx, by + drx) == EMPTY
         self.board.set(rx, by + drx, rook)
 
-      self.castle_possible[side_to_move] = False
+      self.castle_possible[self.side_to_move] = False
+    self.side_to_move = not self.side_to_move
+
+  def get_legal_moves(self, begin):
+    pass
 
 def algebraic_to_coords(alg):
   col, row = alg.lower()
