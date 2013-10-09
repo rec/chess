@@ -14,7 +14,7 @@ def is_black(piece):
 
 class Game(object):
   def __init__(self, board=None):
-    self.board = board or copy.deepcopy(Board.INITIAL)
+    self.board = Board.to_board(board)
     self.last_pawn_move_or_capture = -1
     self.castle_possible = [True, True]
     self.board_history = []
