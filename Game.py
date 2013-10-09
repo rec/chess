@@ -9,8 +9,6 @@ STARTING_BOARD_DESC = [
   '        ',
   '        ',
   '        ',
-  '        ',
-  '        ',
   'PPPPPPPP',
   'RNBQKBNR'
   ]
@@ -39,10 +37,11 @@ class Game(object):
     bx, by = begin
     ex, ey = end
 
+    print(bx, by, self.board[by], self.board)
     begin_piece = self.board[by][bx]
-    assert begin_piece is not EMPTY
+    assert begin_piece != EMPTY
 
-    side_to_move = BLACK if self.move_number() % 2 else WHITE
+    side_to_move = WHITE if self.move_number() % 2 else BLACK
     if side_to_move is BLACK:
       assert begin_piece.islower()
     else:
@@ -75,17 +74,18 @@ class Game(object):
     if abs(dx) == 2 and abs(dy) == 1:
       return False
 
-    assert abs(dx) == abs(dy) or not dy or not dy
+    assert abs(dx) == abs(dy) or not dx or not dy
     delta = max(abs(dx), abs(dy))
-    ddx = dx / delta
-    ddy = dy / delta
+    ddx = dx // delta
+    ddy = dy // delta
 
     for d in range(1, delta):
       x = bx + ddx * d
       y = by + ddy * d
-      if self.board[by][bx] != EMPTY:
-        return False
-    return True
+      if self.board[y][x] != EMPTY:
+        print('Found a piece ', self.board[y][x], 'at', x, y)
+        return True
+    return False
 
   def print_board(self):
     for row in self.board:
@@ -96,4 +96,6 @@ def algebraic_to_coords(alg):
   col, row = alg.lower()
   x = ord(col) - ord('a')
   y = 7 - (ord(row) - ord('1'))
+  assert 0 <= x <= 7
+  assert 0 <= y <= 7
   return x, y
